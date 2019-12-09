@@ -10,4 +10,4 @@ if(args.length !== 1) {
 
 const filename = args[0];
 
-csv2json(filename)
+csvToJson(filename)

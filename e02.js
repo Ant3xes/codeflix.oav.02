@@ -4,15 +4,15 @@ const {getName} = require("./helper");
 
 function transform(filename, re, fn) {
     
-    const rstream = fs.createReadStream(filename);
-    const wstream = fs.createWriteStream(getName(filename, ".transform"));
-    const tstream = new Transform({
+    const readstream = fs.createReadStream(filename);
+    const writestream = fs.createWriteStream(getName(filename, ".transform"));
+    const transformstream = new Transform({
         transform(chunk, encoding, callback) {
             this.push(chunk.toString().replace(re, str => fn(str)));
             callback();
         }
     })
-    rstream.pipe(tstream).pipe(wstream);
+    readstream.pipe(transformstream).pipe(writestream);
 }
 
 module.exports = {

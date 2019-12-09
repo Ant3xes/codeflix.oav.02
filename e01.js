@@ -3,10 +3,10 @@ const {getName} = require("./helper");
 
 function duplicate(filename) {
     
-    const rstream = fs.createReadStream(filename);
-    const wstream = fs.createWriteStream(getName(filename, ".duplicate"));
+    const readStream = fs.createReadStream(filename);
+    const writestream = fs.createWriteStream(getName(filename, ".duplicate"));
     
-    rstream.pipe(wstream);
+    readStream.pipe(writestream);
     console.log(`File: ${filename} successfully duplicated!`)
 }
 

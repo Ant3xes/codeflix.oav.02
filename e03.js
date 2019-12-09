@@ -4,26 +4,26 @@ const {getName} = require("./helper");
 
 function transformStdout(filename, re, fn, inStdout = true) {
     
-    const rstream = fs.createReadStream(filename);
+    const readstream = fs.createReadStream(filename);
 
     if(inStdout) {
         let content = "";
-        rstream.on("data", chunk => {
+        readstream.on("data", chunk => {
             content += chunk.toString().replace(re, str => fn(str));
         })
 
-        rstream.on("end", () => {
+        readstream.on("end", () => {
             console.log(content)
         })
     } else {
-        const wstream = fs.createWriteStream(getName(filename, ".transform"));
-        const tstream = new Transform({
+        const writestream = fs.createWriteStream(getName(filename, ".transform"));
+        const transformstream = new Transform({
             transform(chunk, encoding, callback) {
                 this.push(chunk.toString().replace(re, str => fn(str)));
                 callback();
             }
         })
-        rstream.pipe(tstream).pipe(wstream);
+        readstream.pipe(transformstream).pipe(writestream);
     }
 }
 

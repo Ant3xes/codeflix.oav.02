@@ -4,9 +4,9 @@ const {getName, getDataFromCSV, formatValues} = require("./helper");
 
 function csv2json(filename) {
     
-    const rstream = fs.createReadStream(filename);
-    const wstream = fs.createWriteStream(getName(filename, "", ".json"));
-    const tstream = new Transform({
+    const readstream = fs.createReadStream(filename);
+    const writestream = fs.createWriteStream(getName(filename, "", ".json"));
+    const transformstream = new Transform({
         transform(chunk, encoding, callback) {
             const {keys, values} = getDataFromCSV(chunk.toString())
             let arrJson = [];
@@ -26,7 +26,7 @@ function csv2json(filename) {
             callback();
         }
     })
-    rstream.pipe(tstream).pipe(wstream);
+    readstream.pipe(transformstream).pipe(writestream);
 }
 
 module.exports = {
